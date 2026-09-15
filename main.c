@@ -43,7 +43,49 @@ double waitingTime[MAX_PATIENTS];
 int patientCount = 0;
 int specialtyQueue[SPECIALTIES] = {0, 0, 0, 0};
 
+int getInteger(char message[], int min, int max);
+
+void registerPatient(void);
+
 int main(void)
 {
+    int choice;
+
+    do
+    {
+        printf("\n============================================\n");
+        printf(" SMART HOSPITAL RESOURCE ALLOCATION SYSTEM\n");
+        printf("============================================\n");
+        printf("1. Register Patient\n");
+        printf("2. Display Bed Occupancy\n");
+        printf("3. Display Patients by Priority\n");
+        printf("4. Performance Reports\n");
+        printf("5. Exit\n");
+        printf("============================================\n");
+
+        choice = getInteger("Enter your choice: ", 1, 5);
+
+        switch (choice)
+        {
+            case 1:
+                registerPatient();
+                break;
+
+            case 2:
+                break;
+
+            case 3:
+                break;
+
+            case 4:
+                break;
+
+            case 5:
+                printf("\nSystem closed successfully.\n");
+                break;
+        }
+
+    } while (choice != 5);
+
     return 0;
 }
