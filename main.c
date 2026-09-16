@@ -45,9 +45,12 @@ int specialtyQueue[SPECIALTIES] = {0, 0, 0, 0};
 
 void displaySpecialties(void);
 void displayWards(void);
+void displayBeds(void);
 
 int getInteger(char message[], int min, int max);
 void getName(char name[]);
+
+int findAvailableBed(int ward);
 
 void registerPatient(void);
 
@@ -76,6 +79,7 @@ int main(void)
                 break;
 
             case 2:
+                displayBeds();
                 break;
 
             case 3:
@@ -156,4 +160,64 @@ void displayWards(void)
     {
         printf(" %-4d %-28s LKR%11.2f %6d \n",i + 1, wardNames[i], wardDailyRate[i], wardCapacity[i]);
     }
+}
+
+int findAvailableBed(int ward)
+{
+    int bed;
+
+    for (bed = 0; bed < wardCapacity[ward]; bed++)
+    {
+        if (bedOccupancy[ward][bed] == 0)
+        {
+            return bed;
+        }
+    }
+
+    return -1;
+}
+
+void displayBeds(void)
+{
+    int ward;
+    int bed;
+    int available;
+
+    printf("\n==============================================================\n");
+    printf("                       BED OCCUPANCY MAP\n");
+    printf("==============================================================\n");
+
+    for (ward = 0; ward < WARDS; ward++)
+    {
+        available = 0;
+
+        for (bed = 0; bed < wardCapacity[ward]; bed++)
+        {
+            if (bedOccupancy[ward][bed] == 0)
+            {
+                available++;
+            }
+        }
+
+        printf("\n%s (Capacity: %d | Available: %d)\n", wardNames[ward], wardCapacity[ward], available);
+
+        for (bed = 0; bed < wardCapacity[ward]; bed++)
+        {
+            printf("[%d-%02d]",bedOccupancy[ward][bed], bed + 1);
+
+            if ((bed + 1) % 10 == 0)
+            {
+                printf("\n");
+            }
+        }
+
+        if (wardCapacity[ward] % 10 != 0)
+        {
+            printf("\n");
+        }
+    }
+
+    printf("\n==============================================================\n");
+    printf("         [0] = Available   [1] = Occupied\n");
+    printf("==============================================================\n");
 }
