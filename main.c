@@ -261,3 +261,50 @@ double calculateDiscount(double gross, int age)
 
     return 0.0;
 }
+
+void registerPatient(void)
+{
+    int specialty;
+    int ward;
+    int bed;
+
+    if (patientCount >= MAX_PATIENTS)
+    {
+        printf("\nPatient registration limit reached.\n");
+        return;
+    }
+
+    printf("\n=================================================\n");
+    printf("          PATIENT REGISTRATION\n");
+    printf("=================================================\n");
+
+    sprintf(patientID[patientCount], "PAT-%04d", 1001 + patientCount);
+
+    printf("Patient ID: %s\n", patientID[patientCount]);
+    getName(patientName[patientCount]);
+
+    patientAge[patientCount] = getInteger("Enter Patient Age (0-150): ", 0, 150);
+
+    printf("\n1 = Normal\n");
+    printf("2 = Urgent\n");
+    printf("3 = Critical\n");
+    urgencyLevel[patientCount] = getInteger("Enter Emergency Level: ", 1, 3);
+
+    displaySpecialties();
+
+    specialty = getInteger("Select Specialty ID: ", 1, 4);
+
+    if (specialtyQueue[specialty - 1] >= dailyPatientCap[specialty - 1])
+    {
+        printf("\nSorry. Daily patient capacity for this specialty is full.\n");
+        return;
+    }
+
+    selectedSpecialty[patientCount] = specialty - 1;
+
+    waitingTime[patientCount] = specialtyQueue[specialty - 1] * consultationTime[specialty - 1];
+
+    specialtyQueue[specialty - 1]++;
+
+    patientCount++;
+}
