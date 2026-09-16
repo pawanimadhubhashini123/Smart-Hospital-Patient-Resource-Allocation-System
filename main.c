@@ -43,6 +43,8 @@ double waitingTime[MAX_PATIENTS];
 int patientCount = 0;
 int specialtyQueue[SPECIALTIES] = {0, 0, 0, 0};
 
+void displaySpecialties(void);
+
 int getInteger(char message[], int min, int max);
 void getName(char name[]);
 
@@ -127,5 +129,17 @@ void getName(char name[])
           return;
         }
         printf("Patient name cannot be empty.\n");
+    }
+}
+
+void displaySpecialties(void)
+{
+    int i;
+
+    printf("\n------------------- DOCTOR SPECIALTIES & FEES ------------------------\n");
+    printf("%-4s %-25s %-15s %-10s %-10s\n","ID", "Specialty", "Base Fee", "Time", "Daily Cap");
+    for (i = 0; i < SPECIALTIES; i++)
+    {
+        printf("%-3d  %-25s LKR%8.2f %6d mins %5d\n", i + 1, specialtyNames[i], consultationFee[i], consultationTime[i], dailyPatientCap[i]);
     }
 }
