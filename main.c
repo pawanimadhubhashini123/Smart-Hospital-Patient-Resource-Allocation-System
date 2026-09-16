@@ -52,6 +52,10 @@ void getName(char name[]);
 
 int findAvailableBed(int ward);
 
+double calculateSurcharge(double fee, int urgency);
+double calculateWardCost(int ward, int days);
+double calculateDiscount(double gross, int age);
+
 void registerPatient(void);
 
 int main(void)
@@ -220,4 +224,40 @@ void displayBeds(void)
     printf("\n==============================================================\n");
     printf("         [0] = Available   [1] = Occupied\n");
     printf("==============================================================\n");
+}
+
+double calculateSurcharge(double fee, int urgency)
+{
+    if (urgency == 1)
+    {
+        return 0.0;
+    }
+    else if (urgency == 2)
+    {
+        return fee * 0.20;
+    }
+    else
+    {
+        return fee * 0.50;
+    }
+}
+
+double calculateWardCost(int ward, int days)
+{
+    if (days == 0)
+    {
+        return 0.0;
+    }
+
+    return wardDailyRate[ward] * days;
+}
+
+double calculateDiscount(double gross, int age)
+{
+    if (age < 5 || age > 65)
+    {
+        return gross * 0.15;
+    }
+
+    return 0.0;
 }
