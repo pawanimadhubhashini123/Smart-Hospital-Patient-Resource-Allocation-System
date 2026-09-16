@@ -44,6 +44,7 @@ int patientCount = 0;
 int specialtyQueue[SPECIALTIES] = {0, 0, 0, 0};
 
 int getInteger(char message[], int min, int max);
+void getName(char name[]);
 
 void registerPatient(void);
 
@@ -112,3 +113,19 @@ int getInteger(char message[], int min, int max)
     }
 }
 
+void getName(char name[])
+{
+    while (1)
+    {
+        printf("Enter Patient Name: ");
+        fgets(name, 50, stdin);
+
+        name[strcspn(name, "\n")] = '\0';
+
+        if (strlen(name) > 0)
+        {
+          return;
+        }
+        printf("Patient name cannot be empty.\n");
+    }
+}
