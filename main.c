@@ -44,6 +44,7 @@ int patientCount = 0;
 int specialtyQueue[SPECIALTIES] = {0, 0, 0, 0};
 
 void displaySpecialties(void);
+void displayWards(void);
 
 int getInteger(char message[], int min, int max);
 void getName(char name[]);
@@ -141,5 +142,18 @@ void displaySpecialties(void)
     for (i = 0; i < SPECIALTIES; i++)
     {
         printf("%-3d  %-25s LKR%8.2f %6d mins %5d\n", i + 1, specialtyNames[i], consultationFee[i], consultationTime[i], dailyPatientCap[i]);
+    }
+}
+
+void displayWards(void)
+{
+    int i;
+
+    printf("\n-------------------- HOSPITAL WARD INFORMATION --------------------\n");
+    printf(" %-4s %-28s %-18s %-10s\n","ID", "Ward Name", "Daily Bed Rate", "Bed Capacity");
+
+    for (i = 0; i < WARDS; i++)
+    {
+        printf(" %-4d %-28s LKR%11.2f %6d \n",i + 1, wardNames[i], wardDailyRate[i], wardCapacity[i]);
     }
 }
