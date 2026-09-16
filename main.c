@@ -89,3 +89,26 @@ int main(void)
 
     return 0;
 }
+
+int getInteger(char message[], int min, int max)
+{
+    int value;
+    int result;
+
+    while (1)
+    {
+        printf("%s", message);
+        result = scanf("%d", &value);
+
+        if (result == 1 && value >= min && value <= max)
+        {
+            while (getchar() != '\n');
+            return value;
+        }
+
+        printf("Invalid input. Enter a value from %d to %d.\n", min, max);
+
+        while (getchar() != '\n');
+    }
+}
+
