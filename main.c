@@ -58,6 +58,7 @@ double calculateDiscount(double gross, int age);
 
 void registerPatient(void);
 void displayPatientBill(int index);
+void displayPatientsByPriority(void);
 
 int main(void)
 {
@@ -88,6 +89,7 @@ int main(void)
                 break;
 
             case 3:
+                displayPatientsByPriority();
                 break;
 
             case 4:
@@ -439,3 +441,51 @@ void displayPatientBill(int index)
     printf("\n");
     printf("=========================================================\n");
 }
+
+void displayPatientsByPriority(void)
+{
+    int order[MAX_PATIENTS];
+    int i, j, temp;
+
+    if (patientCount == 0)
+    {
+        printf("\nNo patients registered.\n");
+        return;
+    }
+
+    for (i = 0; i < patientCount; i++)
+    {
+        order[i] = i;
+    }
+
+
+    for (i = 0; i < patientCount - 1; i++)
+    {
+        int highest = i;
+
+        for (j = i + 1; j < patientCount; j++)
+        {
+            if (urgencyLevel[order[j]] > urgencyLevel[order[highest]])
+            {
+                highest = j;
+            }
+        }
+
+        temp = order[i];
+        order[i] = order[highest];
+        order[highest] = temp;
+    }
+
+    printf("\n=====================================================================\n");
+    printf("              PATIENT PRIORITY LIST\n");
+    printf("=====================================================================\n");
+    printf("  %-5s %-10s %-20s %-15s %-22s\n","Rank", "ID", "Name", "Urgency level","Final Amount");
+
+    for (i = 0; i < patientCount; i++)
+    {
+        int index = order[i];
+
+        printf("  %-5d %-10s %-20s Level %-8d  LKR %.2f\n", i + 1, patientID[index], patientName[index], urgencyLevel[index],finalAmount[index]);
+    }
+}
+
