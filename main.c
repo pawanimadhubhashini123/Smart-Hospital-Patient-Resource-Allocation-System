@@ -306,5 +306,41 @@ void registerPatient(void)
 
     specialtyQueue[specialty - 1]++;
 
+    printf("\nYes(1) - Admitted to Ward\n");
+    printf("No(0) - Outpatient (OPD)\n");
+
+    admitted[patientCount] = getInteger("Is the patient admitted to a ward? ", 0, 1);
+
+    selectedWard[patientCount] = -1;
+    assignedBed[patientCount] = -1;
+    daysAdmitted[patientCount] = 0;
+
+    if (admitted[patientCount] == 1)
+    {
+        displayWards();
+
+        ward = getInteger("Select Ward ID: ", 1, 4);
+
+        ward--;
+
+        bed = findAvailableBed(ward);
+
+        if (bed == -1)
+        {
+            printf("\nSelected ward is full.\n");
+            printf("Patient registration cancelled.\n");
+
+            specialtyQueue[specialty - 1]--;
+            return;
+        }
+
+        selectedWard[patientCount] = ward;
+        assignedBed[patientCount] = bed;
+
+        daysAdmitted[patientCount] = getInteger("Enter Days Admitted (1-365): ", 1, 365);
+
+        bedOccupancy[ward][bed] = 1;
+    }
+
     patientCount++;
 }
