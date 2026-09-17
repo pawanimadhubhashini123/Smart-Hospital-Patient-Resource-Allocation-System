@@ -342,5 +342,26 @@ void registerPatient(void)
         bedOccupancy[ward][bed] = 1;
     }
 
+    baseFee[patientCount] = consultationFee[selectedSpecialty[patientCount]];
+
+    surcharge[patientCount] = calculateSurcharge(baseFee[patientCount],urgencyLevel[patientCount]);
+
+    if (admitted[patientCount] == 1)
+    {
+        wardCost[patientCount] = calculateWardCost(selectedWard[patientCount],daysAdmitted[patientCount]);
+    }
+    else
+    {
+        wardCost[patientCount] = 0.0;
+    }
+
+    grossTotal[patientCount] = baseFee[patientCount] + surcharge[patientCount] + wardCost[patientCount];
+
+    discount[patientCount] = calculateDiscount(grossTotal[patientCount],patientAge[patientCount]);
+
+    finalAmount[patientCount] = grossTotal[patientCount] - discount[patientCount];
+
+    printf("\nPatient registered successfully.\n");
+
     patientCount++;
 }
