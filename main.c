@@ -63,10 +63,14 @@ void displayPatientsByPriority(void);
 void displayReports(void);
 
 void savePatientRecord(int index);
+void saveBeds(void);
+void loadBeds(void);
 
 int main(void)
 {
     int choice;
+
+    loadBeds();
 
     do
     {
@@ -101,6 +105,7 @@ int main(void)
                 break;
 
             case 5:
+                saveBeds();
                 printf("\nSystem closed successfully.\n");
                 break;
         }
@@ -185,13 +190,24 @@ void displaySpecialties(void)
 void displayWards(void)
 {
     int i;
+    int bed;
 
     printf("\n-------------------- HOSPITAL WARD INFORMATION --------------------\n");
-    printf(" %-4s %-28s %-18s %-10s\n","ID", "Ward Name", "Daily Bed Rate", "Bed Capacity");
+    printf(" %-4s %-28s %-18s %-15s\n","ID", "Ward Name", "Daily Bed Rate", "Available/Total");
 
     for (i = 0; i < WARDS; i++)
     {
-        printf(" %-4d %-28s LKR%11.2f %6d \n",i + 1, wardNames[i], wardDailyRate[i], wardCapacity[i]);
+        int occupied = 0;
+        for (bed = 0; bed < wardCapacity[i]; bed++)
+        {
+            if (bedOccupancy[i][bed] == 1)
+            {
+                occupied++;
+            }
+        }
+        int available = wardCapacity[i] - occupied;
+
+        printf(" %-4d %-28s LKR%11.2f %6d / %-5d \n", i + 1, wardNames[i], wardDailyRate[i], available, wardCapacity[i]);
     }
 }
 
@@ -394,6 +410,7 @@ void registerPatient(void)
 
     displayPatientBill(patientCount);
     savePatientRecord(patientCount);
+    saveBeds();
 
     patientCount++;
 }
@@ -613,6 +630,54 @@ void savePatientRecord(int index)
             patientAge[index],
             urgencyLevel[index],
             finalAmount[index]);
+
+    fclose(file);
+}
+
+void saveBeds(void)
+{
+    FILE *file;
+    int ward, bed;
+
+    file = fopen("beds_status.txt", "w");
+
+    if (file == NULL)
+    {
+        return;
+    }
+
+    for (ward = 0; ward < WARDS; ward++)
+    {
+        for (bed = 0; bed < wardCapacity[ward]; bed++)
+        {
+            fprintf(file, "%d ", bedOccupancy[ward][bed]);
+        }
+
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+}
+
+void loadBeds(void)
+{
+    FILE *file;
+    int ward, bed;
+
+    file = fopen("beds_status.txt", "r");
+
+    if (file == NULL)
+    {
+        return;
+    }
+
+    for (ward = 0; ward < WARDS; ward++)
+    {
+        for (bed = 0; bed < wardCapacity[ward]; bed++)
+        {
+            fscanf(file, "%d", &bedOccupancy[ward][bed]);
+        }
+    }
 
     fclose(file);
 }
