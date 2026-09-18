@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MAX_PATIENTS 100
 #define WARDS 4
@@ -142,11 +143,32 @@ void getName(char name[])
 
         if (strlen(name) > 0)
         {
-          return;
+            int valid = 1;
+            for (size_t i = 0; i < strlen(name); i++)
+            {
+                if (!isalpha((unsigned char)name[i]) && !isspace((unsigned char)name[i]))
+                {
+                    valid = 0;
+                    break;
+                }
+            }
+
+            if (valid)
+            {
+                return;
+            }
+            else
+            {
+                printf("Invalid input! Name should only contain letters and spaces.\n");
+            }
         }
-        printf("Patient name cannot be empty.\n");
+        else
+        {
+            printf("Patient name cannot be empty.\n");
+        }
     }
 }
+
 
 void displaySpecialties(void)
 {
