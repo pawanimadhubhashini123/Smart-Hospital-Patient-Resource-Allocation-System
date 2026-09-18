@@ -61,6 +61,8 @@ void displayPatientBill(int index);
 void displayPatientsByPriority(void);
 void displayReports(void);
 
+void savePatientRecord(int index);
+
 int main(void)
 {
     int choice;
@@ -369,6 +371,7 @@ void registerPatient(void)
     printf("\nPatient registered successfully.\n");
 
     displayPatientBill(patientCount);
+    savePatientRecord(patientCount);
 
     patientCount++;
 }
@@ -568,4 +571,26 @@ void displayReports(void)
     }
 
     printf("====================================================\n");
+}
+
+void savePatientRecord(int index)
+{
+    FILE *file;
+
+    file = fopen("patient_records.txt", "a");
+
+    if (file == NULL)
+    {
+        return;
+    }
+
+    fprintf(file,
+            "%s | %s | Age: %d | Urgency: %d | Final Bill: %.2f\n",
+            patientID[index],
+            patientName[index],
+            patientAge[index],
+            urgencyLevel[index],
+            finalAmount[index]);
+
+    fclose(file);
 }
